@@ -2,7 +2,7 @@
 
 LIRI is a Language Interpretation and Recognition Interface. It's a command line app running through [Node.js](https://nodejs.org) that can find information about movies, songs, and concerts.
 
-It was made as part of the University of Richmond Coding Bootcamp in January of 2018.
+It was made as part of the University of Richmond Coding Bootcamp in January of 2019.
 
 ![LIRI Demo](demo.gif)
 
