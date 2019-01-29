@@ -2,8 +2,6 @@ const axios = require("axios");
 const fs = require("fs");
 const moment = require("moment");
 const Spotify = require("node-spotify-api");
-require("dotenv").config();
-const keys = require("./keys.js");
 
 function concertThis(args) {
   if (args.length < 2) {
@@ -25,7 +23,7 @@ function concertThis(args) {
     const datetime = moment(data.datetime, moment.ISO_8601).format("MM/DD/YYYY");
 
     outputResult("Venue: " + venue.name + "\n"
-        + "Location: " + venue.city + ", " + venue.region + ", " + venue.country + "\n"
+        + "Location: " + makeLocation(venue) + "\n"
         + "Date: " + datetime);
   });
 }
@@ -67,6 +65,14 @@ function executeCommand(args) {
         spotifyThisSong(args);
         break;
     }
+  }
+}
+
+function makeLocation(venue) {
+  if (venue.region) {
+    return venue.city + ", " + venue.region + ", " + venue.country;
+  } else {
+    return venue.city + ", " + venue.country;
   }
 }
 
@@ -131,6 +137,9 @@ function spotifyThisSong(args) {
     console.error("Too many arguments specified.");
     return;
   }
+
+  require("dotenv").config();
+  const keys = require("./keys.js");
 
   let songName;
   if (args.length < 2) {
