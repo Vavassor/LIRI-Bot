@@ -1,11 +1,33 @@
 const axios = require("axios");
 const fs = require("fs");
+const moment = require("moment");
 const Spotify = require("node-spotify-api");
 require("dotenv").config();
 const keys = require("./keys.js");
 
 function concertThis(args) {
-  console.log("Not implemented yet!");
+  if (args.length < 2) {
+    console.error("Please enter an artist name.");
+    return;
+  }
+
+  if (args.length > 2) {
+    console.error("Too many arguments specified.");
+    return;
+  }
+
+  let artist = args[1];
+  const url = "https://rest.bandsintown.com/artists/" + encodeURIComponent(artist) + "/events?app_id=codingbootcamp";
+
+  axios.get(url).then((response) => {
+    const data = response.data[0];
+    const venue = data.venue;
+    const datetime = moment(data.datetime, moment.ISO_8601).format("MM/DD/YYYY");
+
+    outputResult("Venue: " + venue.name + "\n"
+        + "Location: " + venue.city + ", " + venue.region + ", " + venue.country + "\n"
+        + "Date: " + datetime);
+  });
 }
 
 function doWhatItSays(args) {
@@ -84,7 +106,11 @@ function outputResult(result) {
 function splitArguments(string) {
   const index = string.indexOf(",");
   if (index !== -1) {
-    return [string.slice(0, index), string.slice(index + 1)];
+    let second = string.slice(index + 1);
+    if (second.endsWith("\"") && second.startsWith("\"")) {
+      second = second.slice(1, -1);
+    }
+    return [string.slice(0, index), second];
   } else {
     return [string];
   }
