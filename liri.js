@@ -1,3 +1,4 @@
+const axios = require("axios");
 const fs = require("fs");
 const Spotify = require("node-spotify-api");
 require("dotenv").config();
@@ -48,7 +49,32 @@ function executeCommand(args) {
 }
 
 function movieThis(args) {
-  console.log("Not implemented yet!");
+  if (args.length > 2) {
+    console.error("Too many arguments specified.");
+    return;
+  }
+
+  let movie;
+  if (args.length < 2) {
+    movie = "Mr. Nobody";
+  } else {
+    movie = args[1];
+  }
+
+  const url = "http://www.omdbapi.com/?apikey=trilogy&t=" + encodeURIComponent(movie);
+  axios.get(url).then((response) => {
+    const data = response.data;
+    const rottenTomatoesRating = data.Ratings.find(element => element.Source === "Rotten Tomatoes");
+
+    outputResult("Title: " + data.Title + "\n"
+        + "Released: " + data.Released + "\n"
+        + "IMDB Rating: " + data.imdbRating + "\n"
+        + "Rotten Tomatoes Rating: " + rottenTomatoesRating.Value + "\n"
+        + "Country: " + data.Country + "\n"
+        + "Language: " + data.Language + "\n"
+        + "Plot: " + data.Plot + "\n"
+        + "Actors: " + data.Actors);
+  });
 }
 
 function outputResult(result) {
@@ -65,12 +91,18 @@ function splitArguments(string) {
 }
 
 function spotifyThisSong(args) {
-  if (args.length !== 2) {
-    console.error("Please enter one song to search for on spotify.");
+  if (args.length > 2) {
+    console.error("Too many arguments specified.");
     return;
   }
 
-  const songName = args[1];
+  let songName;
+  if (args.length < 2) {
+    songName = "The Sign";
+  } else {
+    songName = args[1];
+  }
+  
   const spotify = new Spotify(keys.spotify);
 
   spotify.search({
