@@ -40,7 +40,12 @@ function doWhatItSays(args) {
     }
 
     const arguments = splitArguments(data);
-    executeCommand(arguments);
+
+    if (arguments[0] === args[0]) {
+      console.error("The command is not allowed to run itself.");
+    } else {
+      executeCommand(arguments);
+    }
   });
 }
 

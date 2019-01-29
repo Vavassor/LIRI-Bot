@@ -38,7 +38,7 @@ Example
 node liri.js do-what-it-says
 ```
 
-Assuming `random.txt` has these file contents.
+Assume `random.txt` has these file contents.
 ```
 spotify-this-song,"I Want it That Way"
 ```
