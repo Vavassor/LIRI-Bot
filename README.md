@@ -4,6 +4,8 @@ LIRI is a Language Interpretation and Recognition Interface. It's a command line
 
 It was made as part of the University of Richmond Coding Bootcamp in January of 2018.
 
+![LIRI Demo](demo.gif)
+
 ## Commands
 
 * [concert-this](#concert-this)
