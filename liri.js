@@ -98,7 +98,7 @@ function spotifyThisSong(args) {
 
   let songName;
   if (args.length < 2) {
-    songName = "The Sign";
+    songName = "The Sign artist:Ace of Base";
   } else {
     songName = args[1];
   }
