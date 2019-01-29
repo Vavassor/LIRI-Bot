@@ -1,17 +1,26 @@
+const fs = require("fs");
 const Spotify = require("node-spotify-api");
 require("dotenv").config();
 const keys = require("./keys.js");
-
-function outputResult(result) {
-  console.log(result);
-}
 
 function concertThis(args) {
   console.log("Not implemented yet!");
 }
 
-function doWhatItSays() {
-  console.log("Not implemented yet!");
+function doWhatItSays(args) {
+  if (args.length > 1) {
+    console.error("Too many arguments specified.");
+    return;
+  }
+  
+  fs.readFile("random.txt", "utf8", (error, data) => {
+    if (error) {
+      throw error;
+    }
+
+    const arguments = splitArguments(data);
+    executeCommand(arguments);
+  });
 }
 
 function executeCommand(args) {
@@ -24,7 +33,7 @@ function executeCommand(args) {
         break;
 
       case "do-what-it-says":
-        doWhatItSays();
+        doWhatItSays(args);
         break;
 
       case "movie-this":
@@ -40,6 +49,19 @@ function executeCommand(args) {
 
 function movieThis(args) {
   console.log("Not implemented yet!");
+}
+
+function outputResult(result) {
+  console.log(result);
+}
+
+function splitArguments(string) {
+  const index = string.indexOf(",");
+  if (index !== -1) {
+    return [string.slice(0, index), string.slice(index + 1)];
+  } else {
+    return [string];
+  }
 }
 
 function spotifyThisSong(args) {
